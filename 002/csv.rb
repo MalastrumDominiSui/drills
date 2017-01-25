@@ -63,15 +63,32 @@ def csvUnique(str)
 	return(uniqCat)
 end
 
+ 
+ sArray = []
+ pArray = []
 
-csvUnique("Account").each do |name|
-	puts name
-	csvUnique("Category").each do |cat|
-		puts cat  + " $" + spent(cat).round(2).to_s
+CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+	if row[0] == "Sonia"
+		sArray.push(row["Category"])
+	elsif 
+		pArray.push(row["Category"])
 	end
 end
 
+csvUnique("Account").each do |name|
 
+	puts name
+	# csvUnique("Category").each do |cat|
+	# 	puts cat  + " $" + spent(cat).round(2).to_s
+	# end
+
+	puts sArray.uniq
+	puts
+	puts pArray.uniq
+	
+end
+
+    
 
 ## balance function takes a user, all the outflow and inflow, and gives us the total sum for that user
 def balance(str)
