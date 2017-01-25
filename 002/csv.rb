@@ -1,42 +1,77 @@
 require 'csv'
-
-num1 = 0
-num2 = 0
-
-CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
-	name = row[0].delete("\n")
-	spent = []
-	if name == "Priya"
-		num1 += row[4].gsub(/[$]/, '').to_f  ##stackoverflow takes dollar sign substitutes with nothing
-	elsif name == "Sonia"
-		num2 += row[4].gsub(/[$]/, '').to_f
-
-	end
+require 'pry'
 
 
 
-end
+## run spent for Every unique person,(e.g. sonya, priya) run spent for every unique category
+##  for every unique(persons) & for every unique(categories) run spent(category) ==> [an array of arrays]
 
-puts "number is #{num1}"
+# def personCatSpent(pplArr,catArr)
+# 	 pplArr.each do |person|
 
-puts "number is #{num2}"
+# 		#CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
 
-# CSV.foreach("accounts.csv") do |row|
-#     puts row.inspect
+# 		catArr.each do |category|
+# 			#CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+# 			spent(catArr[clength])
+# 			clength -=
+
+			
+# 		end
+
+# 		plength -=
+# 	end
+
 # end
 
-# average_money_spent = Array.new
-#   CSV.foreach('accounts.csv') do |row|
-#     average_money_spent << row[2] / row[1]
-
-##main function, prints information formatted
-
-##collect all the unique categories take list of categories and give us a unique list
-def uniqueList(str)
+##personCatSpent(csvUnique("Account"), csvUnique("Category"))
 
 
-	return()
+
+
+
+
+## spent takes an Category name (a string) and returns amount of total outflow in that Category
+
+def spent(str)  ## str is our category e.g. "Allowance"
+
+num1 = 0
+
+	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+		##expense = row[4].delete("\n")
+			if row[3] == str
+			num1 += row[4].gsub(/[$]/, '').to_f
+			end  ##stackoverflow takes dollar sign substitutes with nothing
+	end
+
+	return(num1)
+
 end
+
+##spent("Rent")
+
+## takes name of header, finds all unique strings within that header row[num], returns an array of those strings
+
+def csvUnique(str)
+	rowArray = []
+	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+		category = row[str].delete("\n")
+		rowArray.push(category)
+	end
+	uniqCat = rowArray.uniq
+
+	return(uniqCat)
+end
+
+
+csvUnique("Account").each do |name|
+	puts name
+	csvUnique("Category").each do |cat|
+		puts cat  + " $" + spent(cat).round(2).to_s
+	end
+end
+
+
 
 ## balance function takes a user, all the outflow and inflow, and gives us the total sum for that user
 def balance(str)
