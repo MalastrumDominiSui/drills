@@ -1,6 +1,8 @@
 require 'csv'
 require 'pry'
 
+
+## cleans a string from money, decimal point
 def scrub(str)
 	scrubstr = str.delete("$").delete(",").delete("\n")
 	return(scrubstr)
