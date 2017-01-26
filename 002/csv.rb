@@ -10,15 +10,7 @@ def scrub(str)
 end
 
 
-
-
-
-
-
-
-
-## spent takes an Category name (a string) and returns amount of total outflow in that Category
-
+## spent takes an Category name (a string) and returns amount of total outflow in that Categoryr
 def spent(str)  ## str is our category e.g. "Allowance"
 
  	num1 = 0
@@ -76,21 +68,54 @@ def allowance(account_name)  ## Used to Find Allowance. Sums InFlow for Each Acc
 end
 
 
-def eachSpent(account_name)  ## spent modificed for Allowance Sum
+def eachSpent(account_name)  ## for account_ name gives  total spent in everything BUT "Allowance"
 
 	total_spent = 0
+	
 
 	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
 		
-		if row[0].delete("\n") == account_name && row[3] != "Allowance"
-			total_spent += row[4].gsub(/[$]/, '').to_f
-			total_spent -= row[5].gsub(/[$]/, '').to_f
+		if row["Account"].delete("\n") == account_name && row["Category"] != "Allowance" 
+			total_spent += row["Outflow"].gsub(/[$]/, '').to_f
+			total_spent -= row["Inflow"].gsub(/[$]/, '').to_f			
 		end  
+	
 	end
-
+	
 	return(total_spent)
 
 end
+
+## WORKS,takes a name, and counts nonzero transactions, and gives the average, and count for that Acct
+## Has a bug? Maybe doesn't account for refunds?
+
+def avg(account_name, category) 
+	counter = 0
+	number_of_accounts = []
+
+	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+		
+		if row["Account"].delete("\n") == account_name && row["Category"] == category
+
+
+			number_of_accounts.push(row["Outflow"].gsub(/[$]/, '').to_f)
+				
+		end  
+	
+	end
+
+	if number_of_accounts.sum > 0 
+
+	average = (number_of_accounts.sum - refund)  / number_of_accounts.length
+    #puts average
+    end
+
+	
+
+	return(average)
+end
+
+#avg("Sonia", "Rent")
 
 
 
@@ -184,8 +209,6 @@ csvUniqCatForName("Priya")
 uniqueValuesInColumn("Account").each do |name|
 
 
-    
-   		
    		puts "--------------"
     	puts "#{name}"
     	puts "--------------"
@@ -199,7 +222,9 @@ uniqueValuesInColumn("Account").each do |name|
 		# display all the spend
 		csvUniqCatForName(name).each do |cat|
 			if cat != "Allowance"
-		     puts "Spent -#{perCatSpend(cat, name).round(2)} on #{cat}          "
+		     puts "Spent -#{perCatSpend(cat, name).round(2)} on #{cat}  with average #{avg(name, cat)}"
+
+
 		    end
 		end
 
