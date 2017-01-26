@@ -1,9 +1,13 @@
 require 'csv'
 require 'pry'
 
+def scrub(str)
+	scrubstr = str.delete("$").delete(",").delete("\n")
+	return(scrubstr)
+end
 
 
-## run spent for Every unique person,(e.g. sonya, priya) run spent for every unique category
+## NOT SURE: run spent for Every unique person,(e.g. sonya, priya) run spent for every unique category
 ##  for every unique(persons) & for every unique(categories) run spent(category) ==> [an array of arrays]
 
 # def personCatSpent(pplArr,catArr)
@@ -29,9 +33,7 @@ require 'pry'
 
 
 
-
-
-## spent takes an Category name (a string) and returns amount of total outflow in that Category
+## WORKS: spent takes an Category name (a string) and returns amount of total outflow in that Category
 
 def spent(str)  ## str is our category e.g. "Allowance"
 
@@ -48,9 +50,8 @@ num1 = 0
 
 end
 
-##spent("Rent")
 
-## takes name of header, finds all unique strings within that header row[num], returns an array of those strings
+## WORKS: takes name of header, finds all unique strings within that header row[num], returns an array of those strings
 
 def csvUnique(str)
 	rowArray = []
@@ -63,13 +64,12 @@ def csvUnique(str)
 	return(uniqCat)
 end
 
-## takes an string of an account name (e.g Sonia) and returns array of strings (all the unique Categories of that Account name) 
-
+## WORKS: specific variation of csvUnique : takes an string of an account name (e.g Sonia) and prints name and all its unique accounts
 def csvUniqCatForName(strAcct)
 	catchArray = []
 	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
-		cleanCategory = row[3].delete("\n")      ## cleans up newlines
-		cleanAcct = row[0].delete("\n")   ## cleans up newlines
+		cleanCategory = scrub(row[3])
+		cleanAcct = scrub(row[0])
 		if cleanAcct == strAcct
 			catchArray.push(cleanCategory)
 		end
@@ -89,13 +89,9 @@ csvUniqCatForName("Sonia")
 csvUniqCatForName("Priya")
 
 
-
-
- 
-
  ## display workhorse
- sArray = []
- pArray = []
+#  sArray = []
+#  pArray = []
 
 # CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
 # 	if row[0] == "Sonia"
@@ -120,18 +116,23 @@ csvUniqCatForName("Priya")
 
     
 
-## balance function takes a user, all the outflow and inflow, and gives us the total sum for that user
-def balance(str)
-
-# CSV.foreach("/Users/michaelsefranek/Code/drills/002/accounts.csv", {headers: true, return_headers: false}) do |row|
-# puts row["Outflow"]
-
-# CSV.foreach("/Users/michaelsefranek/Code/drills/002/accounts.csv", {headers: true, return_headers: false}) do |row|
-# puts row["Inflow"]
-
-
-	return()
+## WORKS: balance function takes a user, all the outflow and inflow, and gives us the total sum for that user
+def balance(strAcct)
+	bal = 0
+	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+		cleanAcct = row[0].delete("\n")   ## cleans up newlines
+		if cleanAcct == strAcct 
+			bal = bal + scrub(row[5]).to_f - scrub(row[4]).to_f
+		end
+	end
+	puts strAcct
+	puts
+	puts bal
+	return(bal)
 end
+balance("Priya")
+balance("Sonia")
+
 
 ## spent function takes user, category, all the outflow sums in that category
 def spent(str)
