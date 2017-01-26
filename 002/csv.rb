@@ -63,30 +63,60 @@ def csvUnique(str)
 	return(uniqCat)
 end
 
+## takes an string of an account name (e.g Sonia) and returns array of strings (all the unique Categories of that Account name) 
+
+def csvUniqCatForName(strAcct)
+	catchArray = []
+	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+		cleanCategory = row[3].delete("\n")      ## cleans up newlines
+		cleanAcct = row[0].delete("\n")   ## cleans up newlines
+		if cleanAcct == strAcct
+			catchArray.push(cleanCategory)
+		end
+	end
+	uniqCat = catchArray.uniq
+
+	puts
+	puts strAcct
+	puts
+	puts uniqCat
+
+	return(uniqCat)
+end
+
+csvUniqCatForName("Sonia")
+
+csvUniqCatForName("Priya")
+
+
+
+
  
+
+ ## display workhorse
  sArray = []
  pArray = []
 
-CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
-	if row[0] == "Sonia"
-		sArray.push(row["Category"])
-	elsif 
-		pArray.push(row["Category"])
-	end
-end
+# CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
+# 	if row[0] == "Sonia"
+# 		sArray.push(row["Category"])
+# 	elsif 
+# 		pArray.push(row["Category"])
+# 	end
+# end
 
-csvUnique("Account").each do |name|
+# csvUnique("Account").each do |name|
 
-	puts name
-	# csvUnique("Category").each do |cat|
-	# 	puts cat  + " $" + spent(cat).round(2).to_s
-	# end
+# 	puts name
+# 	# csvUnique("Category").each do |cat|
+# 	# 	puts cat  + " $" + spent(cat).round(2).to_s
+# 	# end
 
-	puts sArray.uniq
-	puts
-	puts pArray.uniq
+# 	puts sArray.uniq
+# 	puts
+# 	puts pArray.uniq
 	
-end
+# end
 
     
 
