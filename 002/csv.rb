@@ -3,80 +3,75 @@ require 'pry'
 
 ## cleans a string from money, decimal point
 def scrub(str)
-    scrubstr = str.delete("$").delete(",").delete("\n")
-    return(scrubstr)
+    return str.delete("$").delete(",").delete("\n")
+end
+
+def rowCurrencyValueToFloat(currencyString)
+	return currencyString.gsub(/[^\d\.]/, '').to_f
 end
 
 ## Finds Sum of Out Flow for Each Catagories for Each Account, accounting for refund
-def perCatSpend(catStr, acctStr)  
-
-	num1 = 0
+def perCatSpend(catStr, acctStr)
+	totalPerAccount = 0.0
 
 	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
-		
-		if row[3].delete("\n") == catStr && row[0].delete("\n") == acctStr
-			num1 -= row["Outflow"].gsub(/[^\d\.]/, '').to_f
-			num1 += row["Inflow"].gsub(/[^\d\.]/, '').to_f
+		if scrub(row["Category"]) == catStr && scrub(row["Account"]) == acctStr
+			totalPerAccount -= rowCurrencyValueToFloat(row["Outflow"])
+			totalPerAccount += rowCurrencyValueToFloat(row["Inflow"])
 		end  
 	end
 
- 	
-	return(num1)
-
+	return totalPerAccount
 end
 
 ## Used to Find Allowance. Sums InFlow for Each Account
 def allowance(account_name)  
-
-	allowance_total = 0
+	allowance_total = 0.0
 
 	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
 		
-		if row[3].delete("\n") == "Allowance" && row[0].delete("\n") == account_name
-			allowance_total += row["Inflow"].gsub(/[^\d\.]/, '').to_f
+		if scrub(row["Category"]) == "Allowance" && scrub(row["Account"])== account_name
+			allowance_total += rowCurrencyValueToFloat(row["Inflow"])
 		end  
 	end
 
-	return(allowance_total)
-
+	return allowance_total
 end
 
 ## for account_ name gives  total spent in everything BUT "Allowance"
-def eachSpent(account_name)  
-
-	total_spent = 0
+def eachSpent(account_name)
 	
-
+	total_spent = 0.0
+	
 	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
 		
-		if row["Account"].delete("\n") == account_name && row["Category"] != "Allowance" 
-			total_spent += row["Outflow"].gsub(/[$]/, '').to_f
-			total_spent -= row["Inflow"].gsub(/[$]/, '').to_f			
-		end  
-	
+		if scrub(row["Account"]) == account_name && row["Category"] != "Allowance" 
+			total_spent += rowCurrencyValueToFloat(row["Outflow"])
+			total_spent -= rowCurrencyValueToFloat(row["Inflow"])			
+		end  	
 	end
 	
-	return(total_spent)
-
+	return total_spent
 end
 
 ## takes a name, and counts nonzero transactions, and gives the average, and count for that Acct
 
 def avg(account_name, category) 
 	counter = 0
-	number_of_accounts = []
+
+	arrayTrans = []
 
 	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
 	
-		if row["Account"].delete("\n") == account_name && row["Category"].delete("\n") == category
+		if scrub(row["Account"]) == account_name && scrub(row["Category"]) == category
 
-			if row["Outflow"].gsub(/[$]/, '').to_f == 0.0
+			if rowCurrencyValueToFloat(row["Outflow"]) == 0.0
 
-				number_of_accounts.push(row["Inflow"].gsub(/[^\d\.]/, '').to_f)
+				arrayTrans.push(rowCurrencyValueToFloat(row["Inflow"]))
 
 
 			else 
-				number_of_accounts.push(row["Outflow"].gsub(/[^\d\.]/, '-').to_f) 
+				arrayTrans.push(- rowCurrencyValueToFloat(row["Outflow"])) 
 
 			end
 
@@ -86,11 +81,11 @@ def avg(account_name, category)
 	end
 
 
-	average = number_of_accounts.sum  / number_of_accounts.length
+	average = arrayTrans.sum  / arrayTrans.length
 		
 
 
-	return(average.round(2))
+	return average.round(2)
 end
 
 ## takes name of header, finds all unique strings within that header row[num], returns an array of those strings
@@ -98,11 +93,11 @@ end
 def uniqueValuesInColumn(header_str)
 	valuesArr = []
 	CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
-		value = row[header_str].delete("\n")
+		value = scrub(row[header_str])
 		valuesArr.push(value)
 	end
 
-	return(valuesArr.uniq)
+	return valuesArr.uniq
 end
 
 ## specific variation of csvUnique : takes an string of an account name (e.g Sonia) and prints name and all its unique accounts
@@ -116,7 +111,7 @@ def csvUniqCatForName(strAcct)
         end
     end
     uniqCat = catchArray.uniq
-    return(uniqCat)
+    return uniqCat
 end
 
 ## takes a string and a number gives us a string with that number of spaces after and a divider "|"
@@ -125,7 +120,7 @@ def makeSpaceStr (csvStr , spaceNum)
 	spaces = spaceNum - csvStr.length 
 	spaces1 = " " * spaces 
 
-	return(print csvStr + spaces1)
+	return print csvStr + spaces1
 
 end
 

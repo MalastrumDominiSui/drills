@@ -1,18 +1,9 @@
-# x=30
-
-# y = "word".length
-
-# z = x-7
-
-# puts " " + "dog" *z
-
-
-def makeSpaceStr (csvStr , spaceNum)
+def makeSpaceStr (csvStr , spaceNum, aCharStr)
 	spaces = spaceNum - csvStr.length 
-	spaces1 = " " * spaces 
+	spaces1 = aCharStr * spaces 
+
+	return(print csvStr + spaces1)
+
 end
-	puts csvStr + spaces1 + "|"
 
-
-
-makeSpaceStr("Allowance" , 20)
+makeSpaceStr ("", 30, "=")
