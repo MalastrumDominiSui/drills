@@ -6,32 +6,20 @@
 //            q                  h
 //  My head just can't wrap around how to easily define a 2 dimensional array. ( an array of arrays)
 //
-//
 
 
-//find the longest length string in array of strings.  --> call instarray on that length.
-
-
-
-function instarray(num1) {  //instantiates an array with num1 empty arrays
-    var arr = [];
+//  NOT SURE IF I NEED: function instarray(num1) {  //instantiates an array with num1 empty arrays
+//     var arr = [];
     
-    for (var i=0; i<num1; i++){
-        arr[i] = [];
-    }
+//     for (var i=0; i<num1; i++){
+//         arr[i] = [];
+//     }
 
-console.log(arr)
-return(arr)
-}
+// console.log(arr)
+// return(arr)
+// }
 
-//instarray(4);
-
-
-function vertstring(hstring){  
-    
-var arrString = hstring.split("");  //split string into array of letters
-    
-}
+// //instarray(4);
 
 
 function maxLength (arrStr){   // takes an array of strings and returns length of longest element
@@ -43,7 +31,29 @@ function maxLength (arrStr){   // takes an array of strings and returns length o
 return(nmax);
 }
 
-function printVert(astring){
-    astring = hstring.split('');
+
+// takes a string and prints it vertically
+function printVert(str){
+    aStrArr = str.split("");
+    for (var i= 0; i< aStrArr.length; i++){
+    	console.log(aStrArr[i]);
+    }
+
     
 }
+
+printVert("moo");
+
+// 
+
+function printVert(strArr){
+    aStrArr = str.split("");
+    for (var i= 0; i< aStrArr.length; i++){
+    	console.log(aStrArr[i]);
+    }
+
+    
+}
+
+
+

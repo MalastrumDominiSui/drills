@@ -142,6 +142,7 @@ uniqueValuesInColumn("Account").each do |name|
       	print "|" 
       	makeSpaceStr(" Average Transaction", 22)
       	puts 
+
       	print "-" * 30
       	print "|"
       	print "-" * 17
@@ -149,7 +150,7 @@ uniqueValuesInColumn("Account").each do |name|
       	print "-" * 22
       	puts
 
-		# display all the spend
+		# display all the rows for categories, total spent, avg spent, with proper space and divisions
 		csvUniqCatForName(name).each do |cat|
 			spentRow = perCatSpend(cat, name).round(2).to_s
 			makeSpaceStr(cat, 30) 
