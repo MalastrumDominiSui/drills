@@ -145,9 +145,14 @@ b = 0.0
 c = 29.1298410289741
 d = -1
 
+
+# some of these, for example resultPretty is combining tests of both arithmetic and display function, so fix this, or parse
+
+#also perhaps test the string scrubber?
+
 testFloat = [a,b,c,d]
-resultPretty = ["423.4     ","0.0       ","29.13     ","-1.0      "]
-resultAddTrans = [423.4, 0.0, 29.13,-1.0]  
+resultPretty = ["423.4     ","0.0       ","29.13     ","-1.0      "]  # of length 10
+resultAddTrans = [423.4, 0.0, 29.13,-1.0]
 
 ## test pretty 
 i = 0
@@ -164,7 +169,7 @@ while i<4 do
   farce = AccountInfo.new
   farce.set_up_initial_values
   farce.update_tally(testFloat[i])
-  puts "update_tally test for AccountInfo result: #{i} is #{farce.pretty_tally == resultAddTrans[i]}"
+  puts "update_tally test for AccountInfo result: #{i+1} is #{farce.pretty_tally == resultAddTrans[i]}"
   i += 1
 end
 
@@ -173,7 +178,7 @@ while i<4 do
   test2 = Category.new
   test2.set_up_initial_values
   test2.add_transaction(testFloat[i]) 
-  puts "add_transaction test for Category result: #{test2.pretty_tally == resultPretty[i]}"
+  puts "add_transaction test #{i+1} for Category result: #{test2.pretty_tally == resultPretty[i]}"
   i += 1
 end
 
@@ -181,7 +186,7 @@ end
 #division  need to go into function and pass the variable, set 
 avgTestAry = [23,34,45,56,67,78,89,90]
 avgTestAry_2 = [32,43,54,65,76,87,98,9]
-avgExpectResult = ["27.5      ", "38.5      ", "49.5      ", "60.5      ", "71.5      ", "82.5      ", "49.5      "]
+avgExpectResult = ["27.5                ", "38.5                ", "49.5                ", "60.5                ", "71.5                ","82.5                ", "93.5                ", "49.5                "]
 
 i = 0
 while i < 8 do
@@ -189,7 +194,7 @@ while i < 8 do
   test3.set_up_initial_values
   test3.add_transaction(avgTestAry[i])
   test3.add_transaction(avgTestAry_2[i])
-  print test3.pretty_avg_transaction == avgExpectResult[i]
+  puts "Test #{i+1} for pretty_avg_transaction #{test3.pretty_avg_transaction == avgExpectResult[i]}"
   i +=1
 end
 
@@ -199,4 +204,3 @@ test4 = AccountInfo.new
 test4.set_up_initial_values
 test4.add_category(weasels)
 print test4.already_has_category(weasels)
-
