@@ -2,6 +2,7 @@ require "sinatra"
 require "./functions.rb"
 require "CSV"
 require "pry"
+# http:/localhost:4567/ ...
 
 	get ("/Sonia"){
 	build_accounts("Sonia")
