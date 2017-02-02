@@ -1,11 +1,31 @@
 <h1> Account Information</h1>
 
-<!-- <form action ="/home" method ="get"> 
 
-	<label> Enter your account name: </label> 
-	<p><input type="text" name="account_name"></p>  
 
-</form> -->
+<form action ="/getinfo" method ="post"> 
+
+	<select name = "Account">
+		<option value = "Sonia">Sonia</option>
+		<option value = "Priya">Priya</option>
+	</select>
+
+	<p><label>Date</label></p> 
+		<input type="date" name="Date">  <!-- date needs to match CSV format -->
+
+	<p><label>Retailer</label></p>
+		<input type="text" name="Payee">
+
+	<p><label>Category</label></p>
+		<input type="text" name="Category">
+
+	<p><label>Gained</label></p>
+		<input type = "text" name="Outflow">
+
+	<p><label>Spent</label></p>
+		<input type="text" name="Inflow">
+
+	<input type= "submit">
+</form>
 
 <!-- <a href="http://localhost:4567/Sonia+Priya">Combination</a> -->
 
